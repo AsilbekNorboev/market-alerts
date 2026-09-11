@@ -1,0 +1,13 @@
+{
+  "name": "market-alerts",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22 <27" },
+  "scripts": {
+    "start": "node eth-discord-alert.mjs",
+    "test": "node --test",
+    "dry-run": "node eth-discord-alert.mjs --dry-run",
+    "test-alert": "node eth-discord-alert.mjs --test-alert"
+  }
+}

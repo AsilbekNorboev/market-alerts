@@ -1,0 +1,19 @@
+services:
+  - type: worker
+    name: market-alerts
+    runtime: node
+    plan: 0.5c-512mb
+    numInstances: 1
+    buildCommand: npm ci && npm test
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 24.14.1
+      - key: ETH_DISCORD_WEBHOOK_URL
+        sync: false
+      - key: ETH_ALERT_PERCENT
+        value: "1"
+      - key: ETH_ALERT_WINDOW_SECONDS
+        value: "60"
+      - key: ETH_ALERT_COOLDOWN_SECONDS
+        value: "300"
