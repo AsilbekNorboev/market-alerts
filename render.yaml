@@ -12,7 +12,7 @@ services:
       - key: ETH_DISCORD_WEBHOOK_URL
         sync: false
       - key: ETH_ALERT_PERCENT
-        value: "1"
+        value: "0.5"
       - key: ETH_ALERT_WINDOW_SECONDS
         value: "60"
       - key: ETH_ALERT_COOLDOWN_SECONDS

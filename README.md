@@ -1,6 +1,6 @@
 # Market alerts
 
-Continuously monitors Coinbase ETH/USD spot trades and sends Discord webhook alerts for moves up or down of at least 1% within a rolling 60-second window. No exchange API key or npm dependencies required.
+Continuously monitors Coinbase ETH/USD spot trades and sends Discord webhook alerts for moves up or down of at least 0.5% within a rolling 60-second window. No exchange API key or npm dependencies required.
 
 The latest price is compared with every observed price within the window, so moves shorter than a minute and across minute boundaries count. Each direction has a five-minute cooldown after successful delivery.
 
@@ -9,12 +9,12 @@ The latest price is compared with every observed price within the window, so mov
 1. In Render, select **New → Blueprint**, connect this repository, and select `main`.
 2. Render reads `render.yaml` and proposes one paid background worker (0.5 CPU, 512 MB). Review its displayed cost.
 3. Enter your Discord channel webhook for `ETH_DISCORD_WEBHOOK_URL` when prompted, then deploy.
-4. Open Logs and look for `Connected; threshold 1% within 60s; Discord enabled`.
+4. Open Logs and look for `Connected; threshold 0.5% within 60s; Discord enabled`.
 5. In the worker's Shell, run `npm run test-alert` to send one test message.
 
 If you already created a worker manually, use this repository with runtime Node, build command `npm ci && npm test`, start command `npm start`, and one instance. Set `NODE_VERSION=24.14.1` and the variables from `.env.example` in Render's Environment settings. Do not create a second worker for the same alerts.
 
-Keep your webhook in Render's environment settings or a local ignored `.env` file. Never commit it. Configuration uses percentages and seconds: `ETH_ALERT_PERCENT=1`, `ETH_ALERT_WINDOW_SECONDS=60`, `ETH_ALERT_COOLDOWN_SECONDS=300`.
+Keep your webhook in Render's environment settings or a local ignored `.env` file. Never commit it. Configuration uses percentages and seconds: `ETH_ALERT_PERCENT=0.5`, `ETH_ALERT_WINDOW_SECONDS=60`, `ETH_ALERT_COOLDOWN_SECONDS=300`.
 
 ## Local usage
 

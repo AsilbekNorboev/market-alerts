@@ -1,7 +1,7 @@
 import { pathToFileURL } from 'node:url';
 
 export class MoveDetector {
-  constructor({ threshold = 1, windowMs = 60000, cooldownMs = 300000 } = {}) {
+  constructor({ threshold = 0.5, windowMs = 60000, cooldownMs = 300000 } = {}) {
     if (![threshold, windowMs, cooldownMs].every(Number.isFinite) || threshold <= 0 || windowMs <= 0 || cooldownMs < 0) throw new Error('Invalid detector settings');
     Object.assign(this, { threshold, windowMs, cooldownMs });
     this.points = [];
@@ -51,7 +51,7 @@ async function main() {
   const dryRun = process.argv.includes('--dry-run');
   const webhook = process.env.ETH_DISCORD_WEBHOOK_URL;
   if (!dryRun && !webhook) throw new Error('Set ETH_DISCORD_WEBHOOK_URL or use --dry-run');
-  const detector = new MoveDetector({ threshold: Number(process.env.ETH_ALERT_PERCENT ?? 1), windowMs: Number(process.env.ETH_ALERT_WINDOW_SECONDS ?? 60) * 1000, cooldownMs: Number(process.env.ETH_ALERT_COOLDOWN_SECONDS ?? 300) * 1000 });
+  const detector = new MoveDetector({ threshold: Number(process.env.ETH_ALERT_PERCENT ?? 0.5), windowMs: Number(process.env.ETH_ALERT_WINDOW_SECONDS ?? 60) * 1000, cooldownMs: Number(process.env.ETH_ALERT_COOLDOWN_SECONDS ?? 300) * 1000 });
   if (process.argv.includes('--test-alert')) {
     if (dryRun) console.log('TEST: ETH alert monitor connected.');
     else await sendDiscord(webhook, 'TEST: ETH alert monitor connected.');
