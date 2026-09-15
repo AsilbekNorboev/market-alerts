@@ -1,6 +1,8 @@
 # Market alerts
 
-Continuously monitors Coinbase ETH/USD spot trades and sends Discord webhook alerts for moves up or down of at least 0.5% within a rolling 60-second window. No exchange API key or npm dependencies required.
+Continuously monitors Coinbase ETH/USD spot trades and sends Discord webhook alerts for moves up or down of at least 0.5% within a rolling 60-second window. No exchange API key required.
+
+Optional Discord bot commands let you create one-time price targets with `/alert price:2300`, list them with `/alerts`, and remove them with `/cancel id:…`. Follow [Discord bot setup](DISCORD-BOT-SETUP.md) to enable commands and persistent storage. Until configured, the existing rapid-move alerts continue normally.
 
 The latest price is compared with every observed price within the window, so moves shorter than a minute and across minute boundaries count. Each direction has a five-minute cooldown after successful delivery.
 

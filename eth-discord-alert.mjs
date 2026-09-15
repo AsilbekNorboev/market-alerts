@@ -1,4 +1,5 @@
 import { pathToFileURL } from 'node:url';
+import { startBot } from './discord-bot.mjs';
 
 export class MoveDetector {
   constructor({ threshold = 0.5, windowMs = 60000, cooldownMs = 300000 } = {}) {
@@ -57,6 +58,8 @@ async function main() {
     else await sendDiscord(webhook, 'TEST: ETH alert monitor connected.');
     return;
   }
+  const bot = !dryRun && process.env.DISCORD_BOT_TOKEN ? await startBot() : null;
+  if (!bot && !dryRun) console.log('Price commands disabled: DISCORD_BOT_TOKEN not set');
   let socket, reconnect, stopped = false, pending = false, retryAt = 0, lastMessage = 0, lastTick = 0, backoff = 1000;
   const log = text => console.log(`${new Date().toISOString()} ${text}`);
   function connect() {
@@ -79,6 +82,7 @@ async function main() {
       if (lastTick && Date.now() - lastTick > 15000) detector.reset();
       lastTick = Date.now();
       backoff = 1000;
+      try { bot?.tick(price, time); } catch { log('Price alert storage failed; check persistent disk'); }
       const move = detector.add(time, price);
       if (!move || pending || Date.now() < retryAt) return;
       pending = true;
@@ -108,6 +112,7 @@ async function main() {
     clearTimeout(reconnect);
     clearInterval(watchdog);
     socket?.close();
+    bot?.close();
   });
   connect();
 }
